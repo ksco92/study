@@ -146,3 +146,98 @@ class TestRectangle:
 
         # Area calculation with floats
         assert abs(rect1.area() - 0.04) < 1e-10
+
+    def test_min_distance_to_point_inside(self) -> None:
+        """Test minimum distance when point is inside rectangle."""
+        rect = Rectangle(0.0, 0.0, 10.0, 10.0)
+        assert rect.min_distance_to_point(5.0, 5.0) == 0.0
+        assert rect.min_distance_to_point(0.0, 0.0) == 0.0
+        assert rect.min_distance_to_point(10.0, 10.0) == 0.0
+
+    def test_min_distance_to_point_outside_horizontal(self) -> None:
+        """Test minimum distance when point is outside horizontally."""
+        rect = Rectangle(0.0, 0.0, 10.0, 10.0)
+
+        # Point to the left
+        distance = rect.min_distance_to_point(-5.0, 5.0)
+        assert abs(distance - 5.0) < 0.001
+
+        # Point to the right
+        distance = rect.min_distance_to_point(15.0, 5.0)
+        assert abs(distance - 5.0) < 0.001
+
+    def test_min_distance_to_point_outside_vertical(self) -> None:
+        """Test minimum distance when point is outside vertically."""
+        rect = Rectangle(0.0, 0.0, 10.0, 10.0)
+
+        # Point below
+        distance = rect.min_distance_to_point(5.0, -3.0)
+        assert abs(distance - 3.0) < 0.001
+
+        # Point above
+        distance = rect.min_distance_to_point(5.0, 14.0)
+        assert abs(distance - 4.0) < 0.001
+
+    def test_min_distance_to_point_outside_corner(self) -> None:
+        """Test minimum distance when point is outside at corner."""
+        rect = Rectangle(0.0, 0.0, 10.0, 10.0)
+
+        # Point at bottom-left corner region (diagonal distance)
+        distance = rect.min_distance_to_point(-3.0, -4.0)
+        assert abs(distance - 5.0) < 0.001  # 3-4-5 triangle
+
+        # Point at top-right corner region
+        distance = rect.min_distance_to_point(13.0, 14.0)
+        assert abs(distance - 5.0) < 0.001  # 3-4-5 triangle
+
+    def test_min_distance_to_point_edge_cases(self) -> None:
+        """Test minimum distance edge cases."""
+        rect = Rectangle(5.0, 5.0, 5.0, 5.0)  # Point rectangle
+
+        # Distance to same point
+        assert rect.min_distance_to_point(5.0, 5.0) == 0.0
+
+        # Distance to nearby point
+        distance = rect.min_distance_to_point(8.0, 9.0)
+        assert abs(distance - 5.0) < 0.001  # 3-4-5 triangle
+
+    def test_center_distance_to_point(self) -> None:
+        """Test center distance calculation."""
+        rect = Rectangle(0.0, 0.0, 10.0, 10.0)
+
+        # Distance from center (5, 5) to origin
+        distance = rect.center_distance_to_point(0.0, 0.0)
+        assert abs(distance - (5 * 2**0.5)) < 0.001
+
+        # Distance from center to itself
+        distance = rect.center_distance_to_point(5.0, 5.0)
+        assert abs(distance) < 0.001
+
+        # Distance from center to (8, 5)
+        distance = rect.center_distance_to_point(8.0, 5.0)
+        assert abs(distance - 3.0) < 0.001
+
+    def test_center_distance_point_rectangle(self) -> None:
+        """Test center distance for point rectangle."""
+        rect = Rectangle(7.0, 3.0, 7.0, 3.0)
+
+        # Distance to origin
+        distance = rect.center_distance_to_point(0.0, 0.0)
+        assert abs(distance - (7**2 + 3**2) ** 0.5) < 0.001
+
+        # Distance to self
+        distance = rect.center_distance_to_point(7.0, 3.0)
+        assert abs(distance) < 0.001
+
+    def test_distance_methods_consistency(self) -> None:
+        """Test that distance methods are consistent."""
+        rect = Rectangle(0.0, 0.0, 10.0, 10.0)
+
+        # For point inside, min_distance should be 0
+        # but center_distance should be non-zero
+        point_x, point_y = 2.0, 3.0
+        min_dist = rect.min_distance_to_point(point_x, point_y)
+        center_dist = rect.center_distance_to_point(point_x, point_y)
+
+        assert min_dist == 0.0
+        assert center_dist > 0.0

@@ -44,6 +44,35 @@ class Rectangle:
         """Check if a point is within this rectangle."""
         return self.x_min <= x <= self.x_max and self.y_min <= y <= self.y_max
 
+    def min_distance_to_point(self: Self, x: float, y: float) -> float:
+        """
+        Calculate minimum distance from a point to this rectangle.
+
+        If the point is inside the rectangle, the distance is 0.
+        Otherwise, it's the distance to the nearest edge or corner.
+
+        :param x: X coordinate of the point.
+        :param y: Y coordinate of the point.
+        :return: Minimum distance from point to rectangle.
+        """
+        dx = max(self.x_min - x, 0.0, x - self.x_max)
+        dy = max(self.y_min - y, 0.0, y - self.y_max)
+        return (dx * dx + dy * dy) ** 0.5
+
+    def center_distance_to_point(self: Self, x: float, y: float) -> float:
+        """
+        Calculate distance from the center of this rectangle to a point.
+
+        :param x: X coordinate of the point.
+        :param y: Y coordinate of the point.
+        :return: Distance from rectangle center to point.
+        """
+        center_x = (self.x_min + self.x_max) / 2
+        center_y = (self.y_min + self.y_max) / 2
+        dx = center_x - x
+        dy = center_y - y
+        return (dx * dx + dy * dy) ** 0.5
+
     def __str__(self: Self) -> str:
         """Return a string representation of the rectangle."""
         if self.x_min == self.x_max and self.y_min == self.y_max:

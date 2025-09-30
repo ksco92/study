@@ -59,3 +59,9 @@ print("Searching for exact point (5, 4):")
 results = rtree.search_point(5, 4)
 for result in results:
     print(f"  Found: {result}")
+
+print("\n" + "=" * 50)
+print("Searching for KNN for (10, 1) with k = 4:")
+results = rtree.knn(10, 0, 4)
+for result in results:
+    print(f"  Found: {result}")

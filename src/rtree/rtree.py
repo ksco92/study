@@ -2,6 +2,7 @@
 
 from typing import Any
 
+from rtree.priority_queue import PriorityQueue
 from rtree.rectangle import Rectangle
 from rtree.rtree_node import RTreeNode
 
@@ -101,6 +102,59 @@ class RTree:
 
         query_rect = Rectangle(x_min, y_min, x_max, y_max)
         return self.root.search(query_rect)
+
+    def knn(self, x: float, y: float, k: int) -> list[tuple[Any, float]]:
+        """
+        Find K nearest neighbors to a query point.
+
+        Uses a priority queue to efficiently search the tree by opening
+        boxes from nearest to farthest. Guarantees that the K closest
+        points are found without exploring unnecessary branches.
+
+        :param x: X coordinate of query point.
+        :param y: Y coordinate of query point.
+        :param k: Number of nearest neighbors to find.
+        :return: List of (data, distance) tuples sorted by distance.
+        """
+        if self.root is None or k <= 0:
+            return []
+
+        results: list[tuple[Any, float]] = []
+        queue: PriorityQueue[tuple[RTreeNode | None, Rectangle]] = PriorityQueue()
+
+        # Start with root node
+        if self.root.mbr is not None:
+            distance = self.root.mbr.min_distance_to_point(x, y)
+            queue.push(distance, (self.root, self.root.mbr))
+
+        while not queue.is_empty() and len(results) < k:
+            dist, (node, mbr) = queue.pop()
+
+            # If we already have k results and this node is farther than
+            # our farthest result, we can stop
+            if len(results) >= k and dist > results[-1][1]:
+                break
+
+            if node is None:
+                continue
+
+            # Process entries in this node
+            for entry_mbr, data in node.entries:
+                entry_dist = entry_mbr.min_distance_to_point(x, y)
+
+                if node.is_leaf:
+                    # This is a point - add it to results
+                    results.append((data, entry_dist))
+
+                    # Keep results sorted and limited to k items
+                    results.sort(key=lambda item: item[1])
+                    if len(results) > k:
+                        results = results[:k]
+                else:
+                    # This is a child node - add it to queue
+                    queue.push(entry_dist, (data, entry_mbr))
+
+        return results
 
     def print_tree(self, node: RTreeNode | None = None, level: int = 0) -> None:
         """Print tree structure for debugging."""
