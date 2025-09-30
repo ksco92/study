@@ -1,0 +1,14 @@
+jupyterlab==4.4.9
+pytest
+coverage
+
+# Linting, formatting, type checking
+black
+flake8
+flake8-docstrings
+flake8-annotations
+flake8-commas
+flake8-multiline-containers
+isort
+darglint
+mypy

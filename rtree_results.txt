@@ -1,0 +1,210 @@
+/Users/rodrigocarvajal/Documents/projects/study/.venv/bin/python /Users/rodrigocarvajal/Documents/projects/study/src/rtree_main.py
+
+==================================================
+INSERTING POINTS INTO R-TREE (with tree visualization after each insertion)
+==================================================
+
+📍 Inserted: Restaurant A at (2, 3)
+Tree after insertion:
+RTree (height=1, max_entries=3)
+└── Root Leaf (2,3)
+    └── • (2,3): Restaurant A
+
+📍 Inserted: Restaurant B at (5, 4)
+Tree after insertion:
+RTree (height=1, max_entries=3)
+└── Root Leaf [(2,3)-(5,4)]
+    ├── • (2,3): Restaurant A
+    └── • (5,4): Restaurant B
+
+📍 Inserted: Store C at (9, 6)
+⚠️  Tree height increased! Rebalancing occurred.
+Tree after insertion:
+RTree (height=2, max_entries=3)
+└── Root Node [(2,3)-(9,6)]
+    ├── Leaf [(2,3)-(5,4)]
+    │   ├── • (2,3): Restaurant A
+    │   └── • (5,4): Restaurant B
+    └── Leaf (9,6)
+        └── • (9,6): Store C
+
+📍 Inserted: Store D at (4, 7)
+Tree after insertion:
+RTree (height=2, max_entries=3)
+└── Root Node [(2,3)-(9,7)]
+    ├── Leaf [(2,3)-(5,4)]
+    │   ├── • (2,3): Restaurant A
+    │   └── • (5,4): Restaurant B
+    └── Leaf [(4,6)-(9,7)]
+        ├── • (9,6): Store C
+        └── • (4,7): Store D
+
+📍 Inserted: Park E at (8, 1)
+⚠️  Tree height increased! Rebalancing occurred.
+Tree after insertion:
+RTree (height=3, max_entries=3)
+└── Root Node [(2,1)-(9,7)]
+    ├── Node [(4,6)-(9,7)]
+    │   └── Leaf [(4,6)-(9,7)]
+    │       ├── • (9,6): Store C
+    │       └── • (4,7): Store D
+    └── Node [(2,1)-(8,4)]
+        ├── Leaf (8,1)
+        │   └── • (8,1): Park E
+        └── Leaf [(2,3)-(5,4)]
+            ├── • (2,3): Restaurant A
+            └── • (5,4): Restaurant B
+
+📍 Inserted: Museum F at (7, 8)
+Tree after insertion:
+RTree (height=3, max_entries=3)
+└── Root Node [(2,1)-(9,8)]
+    ├── Node [(4,6)-(9,8)]
+    │   ├── Leaf (9,6)
+    │   │   └── • (9,6): Store C
+    │   └── Leaf [(4,7)-(7,8)]
+    │       ├── • (4,7): Store D
+    │       └── • (7,8): Museum F
+    └── Node [(2,1)-(8,4)]
+        ├── Leaf (8,1)
+        │   └── • (8,1): Park E
+        └── Leaf [(2,3)-(5,4)]
+            ├── • (2,3): Restaurant A
+            └── • (5,4): Restaurant B
+
+📍 Inserted: Cafe G at (1, 2)
+⚠️  Tree height increased! Rebalancing occurred.
+Tree after insertion:
+RTree (height=4, max_entries=3)
+└── Root Node [(1,1)-(9,8)]
+    ├── Node [(4,6)-(9,8)]
+    │   └── Node [(4,6)-(9,8)]
+    │       ├── Leaf (9,6)
+    │       │   └── • (9,6): Store C
+    │       └── Leaf [(4,7)-(7,8)]
+    │           ├── • (4,7): Store D
+    │           └── • (7,8): Museum F
+    └── Node [(1,1)-(8,4)]
+        ├── Node [(1,2)-(5,4)]
+        │   ├── Leaf (5,4)
+        │   │   └── • (5,4): Restaurant B
+        │   └── Leaf [(1,2)-(2,3)]
+        │       ├── • (1,2): Cafe G
+        │       └── • (2,3): Restaurant A
+        └── Node (8,1)
+            └── Leaf (8,1)
+                └── • (8,1): Park E
+
+📍 Inserted: Library H at (3, 5)
+Tree after insertion:
+RTree (height=4, max_entries=3)
+└── Root Node [(1,1)-(9,8)]
+    ├── Node [(4,6)-(9,8)]
+    │   └── Node [(4,6)-(9,8)]
+    │       ├── Leaf (9,6)
+    │       │   └── • (9,6): Store C
+    │       └── Leaf [(4,7)-(7,8)]
+    │           ├── • (4,7): Store D
+    │           └── • (7,8): Museum F
+    └── Node [(1,1)-(8,5)]
+        ├── Node [(1,2)-(5,5)]
+        │   ├── Leaf [(3,4)-(5,5)]
+        │   │   ├── • (5,4): Restaurant B
+        │   │   └── • (3,5): Library H
+        │   └── Leaf [(1,2)-(2,3)]
+        │       ├── • (1,2): Cafe G
+        │       └── • (2,3): Restaurant A
+        └── Node (8,1)
+            └── Leaf (8,1)
+                └── • (8,1): Park E
+
+📍 Inserted: Bank I at (6, 2)
+Tree after insertion:
+RTree (height=4, max_entries=3)
+└── Root Node [(1,1)-(9,8)]
+    ├── Node [(4,6)-(9,8)]
+    │   └── Node [(4,6)-(9,8)]
+    │       ├── Leaf (9,6)
+    │       │   └── • (9,6): Store C
+    │       └── Leaf [(4,7)-(7,8)]
+    │           ├── • (4,7): Store D
+    │           └── • (7,8): Museum F
+    └── Node [(1,1)-(8,5)]
+        ├── Node [(1,2)-(5,5)]
+        │   ├── Leaf [(3,4)-(5,5)]
+        │   │   ├── • (5,4): Restaurant B
+        │   │   └── • (3,5): Library H
+        │   └── Leaf [(1,2)-(2,3)]
+        │       ├── • (1,2): Cafe G
+        │       └── • (2,3): Restaurant A
+        └── Node [(6,1)-(8,2)]
+            └── Leaf [(6,1)-(8,2)]
+                ├── • (8,1): Park E
+                └── • (6,2): Bank I
+
+📍 Inserted: Hospital J at (5, 9)
+Tree after insertion:
+RTree (height=4, max_entries=3)
+└── Root Node [(1,1)-(9,9)]
+    ├── Node [(4,6)-(9,9)]
+    │   ├── Node (9,6)
+    │   │   └── Leaf (9,6)
+    │   │       └── • (9,6): Store C
+    │   └── Node [(4,7)-(7,9)]
+    │       ├── Leaf [(5,8)-(7,9)]
+    │       │   ├── • (7,8): Museum F
+    │       │   └── • (5,9): Hospital J
+    │       └── Leaf (4,7)
+    │           └── • (4,7): Store D
+    └── Node [(1,1)-(8,5)]
+        ├── Node [(1,2)-(5,5)]
+        │   ├── Leaf [(3,4)-(5,5)]
+        │   │   ├── • (5,4): Restaurant B
+        │   │   └── • (3,5): Library H
+        │   └── Leaf [(1,2)-(2,3)]
+        │       ├── • (1,2): Cafe G
+        │       └── • (2,3): Restaurant A
+        └── Node [(6,1)-(8,2)]
+            └── Leaf [(6,1)-(8,2)]
+                ├── • (8,1): Park E
+                └── • (6,2): Bank I
+
+==================================================
+FINAL TREE STRUCTURE:
+==================================================
+RTree (height=4, max_entries=3)
+└── Root Node [(1,1)-(9,9)]
+    ├── Node [(4,6)-(9,9)]
+    │   ├── Node (9,6)
+    │   │   └── Leaf (9,6)
+    │   │       └── • (9,6): Store C
+    │   └── Node [(4,7)-(7,9)]
+    │       ├── Leaf [(5,8)-(7,9)]
+    │       │   ├── • (7,8): Museum F
+    │       │   └── • (5,9): Hospital J
+    │       └── Leaf (4,7)
+    │           └── • (4,7): Store D
+    └── Node [(1,1)-(8,5)]
+        ├── Node [(1,2)-(5,5)]
+        │   ├── Leaf [(3,4)-(5,5)]
+        │   │   ├── • (5,4): Restaurant B
+        │   │   └── • (3,5): Library H
+        │   └── Leaf [(1,2)-(2,3)]
+        │       ├── • (1,2): Cafe G
+        │       └── • (2,3): Restaurant A
+        └── Node [(6,1)-(8,2)]
+            └── Leaf [(6,1)-(8,2)]
+                ├── • (8,1): Park E
+                └── • (6,2): Bank I
+
+==================================================
+Searching for points in rectangle (3, 3) to (7, 7):
+  Found: Store D
+  Found: Restaurant B
+  Found: Library H
+
+=================================================
+Searching for exact point (5, 4):
+  Found: Restaurant B
+
+Process finished with exit code 0
